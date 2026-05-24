@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CS 360 Base Model</title>
+  <style>
+    /* ── Base ─────────────────────────────────────────────── */
+    body { font-family: Calibri, Arial, sans-serif; font-size: 10.5pt; margin: 1.5cm 2cm; color: #1a1a1a; max-width: 1100px; }
+    h1   { font-size: 20pt; color: #1f3864; border-bottom: 2px solid #1f3864; padding-bottom: 6px; margin-bottom: 4px; }
+    code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-family: Consolas, monospace; font-size: 9.5pt; }
+    p    { line-height: 1.5; margin: 6px 0; }
+
+    /* ── Section header ──────────────────────────────────── */
+    .section-header { font-size: 13pt; font-weight: bold; color: #2e5496; margin: 26px 0 12px 0; border-left: 4px solid #2e5496; padding-left: 10px; }
+    .section-divider { border: none; border-top: 1px solid #d0d0d0; margin: 20px 0; }
+
+    /* ── TOC ─────────────────────────────────────────────── */
+    .toc { background: #f5f8ff; border: 1px solid #c9d8f0; border-radius: 5px; padding: 14px 20px; margin: 14px 0 22px 0; display: inline-block; min-width: 300px; }
+    .toc-title { font-weight: bold; font-size: 11pt; color: #1f3864; margin-bottom: 8px; }
+    .toc ol  { margin: 0; padding-left: 20px; }
+    .toc li  { margin-bottom: 4px; font-size: 10.5pt; }
+    .toc a   { color: #2e5496; text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    .toc ul  { margin: 3px 0 2px 0; padding-left: 18px; list-style-type: disc; }
+    .toc ul li { margin-bottom: 2px; font-size: 10pt; }
+
+    /* ── Overview source chips ───────────────────────────── */
+    .chip-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0; }
+    .chip { background: #e8eef7; border: 1px solid #b8ccec; border-radius: 20px; padding: 6px 16px; font-size: 10pt; color: #1f3864; font-weight: bold; }
+    .chip-source { background: #f0f0f0; border: 1px solid #ccc; border-radius: 20px; padding: 5px 14px; font-size: 9.5pt; color: #555; }
+
+    /* ── Global Rules — date cutoff left, 2 cards stacked right ── */
+    .rule-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 12px; margin: 10px 0; align-items: stretch; }
+    .rule-stack { display: flex; flex-direction: column; gap: 12px; }
+    .rule-card { border: 1px solid #c9d8f0; border-radius: 6px; overflow: hidden; flex: 1; }
+    .rule-card .rule-head { background: #2e5496; color: white; padding: 7px 12px; font-weight: bold; font-size: 10pt; }
+    .rule-card .rule-body { padding: 10px 12px; font-size: 10pt; background: #f5f8ff; line-height: 1.5; }
+
+    /* ── Interaction Type Cards — 2x2 grid ───────────────── */
+    .type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 10px 0; align-items: stretch; }
+    .type-card { border-radius: 7px; overflow: hidden; box-shadow: 0 1px 5px rgba(0,0,0,0.10); display: flex; flex-direction: column; }
+    .type-card .card-header { padding: 10px 14px; color: white; font-weight: bold; font-size: 11pt; flex-shrink: 0; }
+    .type-card .card-body   { padding: 12px 14px; background: white; border: 1px solid #ddd; border-top: none; border-radius: 0 0 7px 7px; flex: 1; }
+    /* Align "What it is" section height across side-by-side cards */
+    .type-card .cs-text-what { min-height: 42px; }
+    /* Align "Applied Filters" section height across side-by-side cards */
+    .type-card .cs-filters-section { min-height: 155px; }
+
+    .card-cases       .card-header { background: #1f3864; }
+    .card-case-emails .card-header { background: #1a6b5a; }
+    .card-standalone  .card-header { background: #5c3070; }
+    .card-gong        .card-header { background: #b04000; }
+
+    /* Inside each card */
+    .card-section { margin-bottom: 11px; }
+    .card-section:last-child { margin-bottom: 0; }
+    .cs-label { font-size: 8.5pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.6px; color: #888; margin-bottom: 4px; }
+    .cs-text  { font-size: 10pt; line-height: 1.45; }
+    .cs-ul    { margin: 2px 0; padding-left: 16px; font-size: 10pt; line-height: 1.5; }
+    .cs-ul li { margin-bottom: 2px; }
+
+    /* Thread/Session mini table inside cards */
+    .ts-table { width: 100%; border-collapse: collapse; font-size: 9.5pt; }
+    .ts-table td { padding: 3px 7px; border: 1px solid #e0e0e0; }
+    .ts-table td:first-child { font-weight: bold; background: #f5f5f5; white-space: nowrap; width: 68px; }
+
+    /* Exclusion pills */
+    .excl-pill { display: inline-block; background: #fce4ec; color: #b71c1c; border-radius: 3px; padding: 2px 7px; font-size: 9pt; margin: 2px 2px 2px 0; font-family: Consolas, monospace; }
+
+    /* Mini note inside card */
+    .card-note { background: #fff8e1; border-left: 3px solid #f9a825; padding: 5px 9px; margin-top: 7px; font-size: 9.5pt; border-radius: 2px; line-height: 1.4; }
+    .card-divider { border: none; border-top: 1px solid #ebebeb; margin: 10px 0; }
+
+    /* ── Multi-level hierarchy callout ───────────────────── */
+    .mlevel-box { border: 1px solid #ffb74d; border-radius: 7px; overflow: hidden; margin-top: 16px; }
+    .mlevel-head { background: #bf360c; color: white; padding: 8px 14px; font-weight: bold; font-size: 10.5pt; }
+    .mlevel-body { padding: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; background: #fff8f5; align-items: start; }
+    .mlevel-note { background: #fff8e1; border-left: 3px solid #f9a825; padding: 6px 10px; margin-top: 8px; font-size: 9.5pt; border-radius: 2px; line-height: 1.4; }
+
+    /* ── Date Cutoff — 2-col ─────────────────────────────── */
+    .date-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 10px 0; }
+    .date-card { border: 1px solid #c9d8f0; border-radius: 6px; overflow: hidden; }
+    .date-card .date-head { background: #2e5496; color: white; padding: 7px 12px; font-weight: bold; font-size: 10pt; }
+    .date-card .date-body { padding: 11px 13px; background: #f5f8ff; font-size: 10pt; line-height: 1.5; }
+    .date-note { background: #fff8e1; border-left: 3px solid #f9a825; padding: 6px 10px; margin-top: 8px; font-size: 9.5pt; border-radius: 2px; }
+
+    /* ── Tables ──────────────────────────────────────────── */
+    table      { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 10pt; }
+    th         { background: #2e5496; color: white; padding: 7px 10px; text-align: left; }
+    td         { border: 1px solid #c9c9c9; padding: 5px 10px; vertical-align: top; }
+    tr:nth-child(even) td { background: #f5f8ff; }
+
+    /* ── Notes ───────────────────────────────────────────── */
+    .note-box  { background: #fff8e1; border-left: 4px solid #f9a825; padding: 10px 14px; margin: 12px 0; border-radius: 2px; font-size: 10pt; line-height: 1.5; }
+
+    .meta { color: #666; font-size: 10pt; font-style: italic; margin-top: 28px; }
+  </style>
+</head>
+<body>
+
+<!-- ── TITLE BLOCK ────────────────────────────────────────── -->
+<h1>CS 360 Base Model</h1>
+<p style="margin:4px 0 10px 0; color:#444;">Collects customer engagement data from three interaction types and sends them to an LLM for scoring. Output is stored in <code>pulse_analysis.engagement_analysis</code>.</p>
+<div class="chip-row" style="margin-bottom:16px;">
+  <div class="chip">Case</div>
+  <div class="chip">Email</div>
+  <div class="chip">Gong</div>
+</div>
+
+<!-- ── TABLE OF CONTENTS ──────────────────────────────────── -->
+<div class="toc">
+  <div class="toc-title">Table of Contents</div>
+  <ol>
+    <li><a href="#global-rules">Global Rules</a></li>
+    <li><a href="#interaction-types">Interaction Types &amp; Population Rules</a>
+      <ul>
+        <li><a href="#cases">Case</a></li>
+        <li><a href="#standalone-emails">Email</a></li>
+        <li><a href="#gong">Gong</a></li>
+      </ul>
+    </li>
+    <li><a href="#output-fields">Output Fields</a></li>
+    <li><a href="#notes">Notes &amp; Open Items</a></li>
+  </ol>
+</div>
+
+<hr class="section-divider">
+
+<!-- ── 1. GLOBAL RULES ────────────────────────────────────── -->
+<div class="section-header" id="global-rules">1. Global Rules</div>
+<p style="color:#555;margin-bottom:10px;">Apply to <strong>all</strong> interaction types</p>
+
+<div class="rule-grid">
+  <!-- Date Cutoff — left, wider -->
+  <div class="rule-card">
+    <div class="rule-head">Date Cutoff</div>
+    <div class="rule-body">
+      <div style="margin-bottom:7px;">Based on <strong>thread start date</strong>. Only threads starting in or after <strong>January 2026</strong> are included.</div>
+      <table style="width:100%; border-collapse:collapse; font-size:9pt; margin-bottom:7px;">
+        <tr>
+          <th style="background:#e8e8e8; color:#333; padding:3px 6px; font-size:8.5pt; text-align:left;">Type</th>
+          <th style="background:#e8e8e8; color:#333; padding:3px 6px; font-size:8.5pt; text-align:left;">Thread Start</th>
+        </tr>
+        <tr><td style="border:1px solid #ddd; padding:3px 6px;">Case / Case Email</td><td style="border:1px solid #ddd; padding:3px 6px;">Parent case created date (own date if no parent)</td></tr>
+        <tr><td style="border:1px solid #ddd; padding:3px 6px; background:#f5f8ff;">Email</td><td style="border:1px solid #ddd; padding:3px 6px; background:#f5f8ff;">Message date of the earliest email in thread</td></tr>
+        <tr><td style="border:1px solid #ddd; padding:3px 6px;">Gong</td><td style="border:1px solid #ddd; padding:3px 6px;">Gong call created date</td></tr>
+      </table>
+      <div style="background:#fff8e1; border-left:3px solid #f9a825; padding:5px 8px; font-size:9pt; line-height:1.4; border-radius:2px;"><strong>Exception:</strong> A pre-2026 case is included if it has email activity from January 2026 or later.</div>
+    </div>
+  </div>
+  <!-- Data Cloud Enrolled + No Duplicates — right, stacked -->
+  <div class="rule-stack">
+    <div class="rule-card">
+      <div class="rule-head">Data Cloud Enrolled</div>
+      <div class="rule-body">Only interactions from accounts enrolled in the Data Cloud program are included.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-head">No Duplicates</div>
+      <div class="rule-body">Each interaction is collected only once. Records already processed in a previous run are excluded from re-collection.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ── 2. INTERACTION TYPES ───────────────────────────────── -->
+<div class="section-header" id="interaction-types">2. Interaction Types &amp; Population Rules</div>
+
+<!-- Cases — full width -->
+<div class="type-card card-cases" id="cases" style="margin-bottom:16px;">
+  <div class="card-header">Case</div>
+  <div class="card-body">
+    <div class="card-section">
+      <div class="cs-label">What it is</div>
+      <div class="cs-text">Each case thread contributes two row types:<br>
+        &bull; <strong>Case row</strong> — metadata (subject, open/close dates), the anchor row for the thread<br>
+        &bull; <strong>Case emails</strong> — all emails linked to the case, included for full LLM conversation context
+      </div>
+    </div>
+    <hr class="card-divider">
+    <div class="card-section">
+      <div class="cs-label">Applied Filters</div>
+      <div style="font-size:9.5pt; font-weight:bold; color:#2e7d32; margin-bottom:3px;">&#10003; Included when (any):</div>
+      <ul class="cs-ul">
+        <li>Case has &ge;1 linked email with <code>move_to_data_cloud__c = TRUE</code></li>
+        <li>Or is the <strong>parent case</strong> of a qualifying case</li>
+        <li>All emails in a triggered thread are included automatically</li>
+      </ul>
+      <div style="font-size:9.5pt; font-weight:bold; color:#c62828; margin:8px 0 4px 0;">&#10007; Excluded when (any field = TRUE):</div>
+      <div>
+        <span class="excl-pill">exclude_from_bi__c</span>
+        <span class="excl-pill">internal_case__c</span>
+        <span class="excl-pill">is_test_account__c</span>
+      </div>
+      <div class="card-note"><strong>Exception:</strong> Test account <code>001Tc00000XYSq5IAH</code> is always included.</div>
+    </div>
+    <hr class="card-divider">
+    <div class="card-section">
+      <div class="cs-label">Thread / Session</div>
+      <table class="ts-table">
+        <tr>
+          <td style="font-weight:bold; background:#e8e8e8; width:90px;">Row type</td>
+          <td style="font-weight:bold; background:#e8e8e8;">Thread</td>
+          <td style="font-weight:bold; background:#e8e8e8;">Session</td>
+        </tr>
+        <tr>
+          <td>Case row</td>
+          <td>Parent case ID &nbsp;(own ID if no parent)</td>
+          <td>Case's own ID</td>
+        </tr>
+        <tr>
+          <td>Case email</td>
+          <td>Parent case ID &nbsp;(own ID if no parent)</td>
+          <td>Email's own ID</td>
+        </tr>
+      </table>
+    </div>
+    <hr class="card-divider">
+    <!-- Edge Case nested inside the Case card -->
+    <div id="multilevel" style="border:1px solid #f0b429; border-radius:5px; overflow:hidden;">
+      <div style="background:#7a5200; color:white; padding:7px 12px; font-weight:bold; font-size:10pt;">Edge Case: Multi-Level Case Hierarchies</div>
+      <div style="padding:12px 14px; background:#fffde7;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start;">
+          <div>
+            <p style="margin:0 0 8px 0;font-size:10pt;">Salesforce cases can form chains where a case is simultaneously a child of one parent <em>and</em> a parent to another — creating hierarchies deeper than 2 levels.</p>
+            <p style="margin:0 0 8px 0;font-size:10pt;"><strong>Rule:</strong> Pipeline supports a maximum depth of <strong>2 levels</strong>. Cases at depth 3 or deeper — and all their descendants — are excluded entirely.</p>
+            <p style="margin:0 0 8px 0;font-size:10pt;"><strong>A case is excluded if its parent also has a parent (grandparent exists).</strong></p>
+            <div class="mlevel-note"><strong>Scale:</strong> 516 cases in multi-level chains out of ~380,000 total. Chains reach up to 8 levels deep. The depth-2 cutoff handles this cleanly with no extra joins.</div>
+          </div>
+          <div>
+            <p style="margin:0 0 7px 0;font-size:10pt;font-weight:bold;">Example: A &rarr; B &rarr; C &rarr; D &rarr; E &rarr; F &rarr; G</p>
+            <table style="font-size:9.5pt;">
+              <tr><th>Case</th><th>Depth</th><th>Included?</th><th>Reason</th></tr>
+              <tr><td><strong>A</strong></td><td>1 (root)</td><td style="color:#2e7d32;font-weight:bold">Yes</td><td>Root — no parent</td></tr>
+              <tr><td><strong>B</strong></td><td>2</td><td style="color:#2e7d32;font-weight:bold">Yes</td><td>Parent (A) has no grandparent</td></tr>
+              <tr><td><strong>C &ndash; G</strong></td><td>3 – 7</td><td style="color:#c62828;font-weight:bold">No</td><td>Has a grandparent — excluded</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Email + Gong — 2-column grid -->
+<div class="type-grid">
+
+  <!-- Standalone Emails -->
+  <div class="type-card card-standalone" id="standalone-emails">
+    <div class="card-header">Email</div>
+    <div class="card-body">
+      <div class="card-section">
+        <div class="cs-label">What it is</div>
+        <div class="cs-text cs-text-what">Emails <strong>not linked to any case</strong> (no <code>parentid</code>). Grouped into threads using Salesforce's email <code>ThreadIdentifier</code> field.</div>
+      </div>
+      <hr class="card-divider">
+      <div class="card-section cs-filters-section">
+        <div class="cs-label">Applied Filters</div>
+        <div style="font-size:9.5pt; font-weight:bold; color:#2e7d32; margin-bottom:3px;">&#10003; Included when (all):</div>
+        <ul class="cs-ul">
+          <li><code>move_to_data_cloud__c = TRUE</code> on the individual email — only flagged emails are collected, even if other emails in the same thread are not flagged</li>
+          <li>Linked Task record has a valid <code>accountid</code></li>
+        </ul>
+      </div>
+      <hr class="card-divider">
+      <div class="card-section">
+        <div class="cs-label">Thread / Session</div>
+        <table class="ts-table">
+          <tr><td>Thread</td><td>ID of the <strong>earliest email</strong> in thread (by date)</td></tr>
+          <tr><td>Session</td><td>Each individual email's own ID</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gong Calls -->
+  <div class="type-card card-gong" id="gong">
+    <div class="card-header">Gong</div>
+    <div class="card-body">
+      <div class="card-section">
+        <div class="cs-label">What it is</div>
+        <div class="cs-text cs-text-what">Each call is a <strong>standalone interaction</strong> — no grouping across calls.</div>
+      </div>
+      <hr class="card-divider">
+      <div class="card-section cs-filters-section">
+        <div class="cs-label">Applied Filters</div>
+        <div style="font-size:9.5pt; font-weight:bold; color:#2e7d32; margin-bottom:3px;">&#10003; Included when (all):</div>
+        <ul class="cs-ul">
+          <li><code>move_to_data_cloud__c = TRUE</code></li>
+          <li><code>gong__call_id__c IS NOT NULL</code></li>
+          <li>Linked account: <code>test_account__c = FALSE</code></li>
+        </ul>
+        <div class="card-note"><strong>Exception:</strong> Test account <code>001Tc00000XYSq5IAH</code> is always included.</div>
+      </div>
+      <hr class="card-divider">
+      <div class="card-section">
+        <div class="cs-label">Thread / Session</div>
+        <table class="ts-table">
+          <tr><td>Thread</td><td>Salesforce ID of the Gong call record</td></tr>
+          <tr><td>Session</td><td>Gong call ID (from Gong system)</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /type-grid -->
+
+<hr class="section-divider">
+
+<!-- ── 3. OUTPUT FIELDS ───────────────────────────────────── -->
+<div class="section-header" id="output-fields">3. Output Fields</div>
+<table>
+  <tr><th>Field</th><th>Description</th></tr>
+  <tr><td><code>engagement_analysis_text_id</code></td><td>Unique row identifier (MD5 hash of record ID + type)</td></tr>
+  <tr><td><code>engagement_channel_source_type</code></td><td>Interaction type: <code>Case</code>, <code>Email</code>, or <code>Gong</code></td></tr>
+  <tr><td><code>engagement_analysis_text_thread</code></td><td>Thread root ID — groups all rows in the same conversation</td></tr>
+  <tr><td><code>engagement_analysis_text_session</code></td><td>Individual record ID — unique within the thread</td></tr>
+  <tr><td><code>engagement_analysis_text_start_date_time</code></td><td>Interaction start (case created date / email sent date / call date)</td></tr>
+  <tr><td><code>engagement_analysis_text_end_date_time</code></td><td>End timestamp (case closed date; same as start for emails &amp; Gong)</td></tr>
+  <tr><td><code>engagement_analysis_attachments</code></td><td>Gong only: JSON array of speaker affiliations (Internal / Customer). Empty for other types.</td></tr>
+  <tr><td><code>account_id</code></td><td>Salesforce Account ID for this interaction. <em>For Email: joined via the Task object.</em></td></tr>
+  <tr><td><code>ingestion_status</code></td><td>Set to <code>Pending</code> on insert; updated by the scoring pipeline after LLM processing</td></tr>
+  <tr><td><code>ingestion_timestamp</code></td><td>Timestamp when the record was inserted into the table</td></tr>
+</table>
+
+<hr class="section-divider">
+
+<!-- ── 4. NOTES ───────────────────────────────────────────── -->
+<div class="section-header" id="notes">4. Notes &amp; Open Items</div>
+
+<div class="note-box">
+  <strong>Thread/Session Rule</strong><br>
+  Every thread must have exactly one session row where <strong>Session ID = Thread ID</strong>. This is the anchor row: case metadata row for Cases, oldest email for Standalone Emails. <em>Exception: for Gong, Thread (Salesforce ID) and Session (Gong ID) are always different — there is no anchor row where they match.</em>
+</div>
+
+<div class="note-box">
+  <strong>Resolved: Threads Missing Session Row</strong><br><br>
+  During testing, a small number of threads were identified where a session row with Session ID = Thread ID was missing.<br><br>
+  <strong>Root cause:</strong> These were cases in multi-level hierarchies (depth 3+). The <code>COALESCE(parentid, id)</code> thread logic assigned them a thread ID belonging to a grandparent or higher ancestor — a case not included in the output as a metadata row, resulting in an "orphaned" thread.<br><br>
+  <strong>Resolution:</strong> The depth-2 cutoff (see Section 3 Edge Case) excludes all cases at depth 3+ from the pipeline entirely, eliminating orphaned threads at the source.
+</div>
+
+<p class="meta">Last updated: May 2026</p>
+
+</body>
+</html>
