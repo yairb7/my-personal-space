@@ -185,6 +185,8 @@
         <li>Case has &ge;1 linked email with <code>move_to_data_cloud__c = TRUE</code></li>
         <li>Or is the <strong>parent case</strong> of a qualifying case</li>
         <li>All emails in a triggered thread are included automatically</li>
+        <li>Case emails are incoming only (customer-sent; JFrog reply emails are excluded)</li>
+        <li>Linked account is present (<code>accountid</code> is not null)</li>
       </ul>
       <div style="font-size:9.5pt; font-weight:bold; color:#c62828; margin:8px 0 4px 0;">&#10007; Excluded when (any field = TRUE):</div>
       <div>
@@ -259,6 +261,7 @@
         <div style="font-size:9.5pt; font-weight:bold; color:#2e7d32; margin-bottom:3px;">&#10003; Included when (all):</div>
         <ul class="cs-ul">
           <li><code>move_to_data_cloud__c = TRUE</code> on the individual email — only flagged emails are collected, even if other emails in the same thread are not flagged</li>
+          <li>Email is incoming (sent by the customer, not JFrog)</li>
           <li>Linked Task record has a valid <code>accountid</code></li>
         </ul>
       </div>
@@ -289,6 +292,7 @@
           <li><code>move_to_data_cloud__c = TRUE</code></li>
           <li><code>gong__call_id__c IS NOT NULL</code></li>
           <li>Linked account: <code>test_account__c = FALSE</code></li>
+          <li>Linked account is present (<code>account_id</code> is not null)</li>
         </ul>
         <div class="card-note"><strong>Exception:</strong> Test account <code>001Tc00000XYSq5IAH</code> is always included.</div>
       </div>
@@ -331,6 +335,11 @@
 <div class="note-box">
   <strong>Thread/Session Rule</strong><br>
   Every thread must have exactly one session row where <strong>Session ID = Thread ID</strong>. This is the anchor row: case metadata row for Cases, oldest email for Standalone Emails. <em>Exception: for Gong, Thread (Salesforce ID) and Session (Gong ID) are always different — there is no anchor row where they match.</em>
+</div>
+
+<div class="note-box">
+  <strong>Data Lag: Missing Account ID</strong><br>
+  Salesforce sometimes populates account linkages asynchronously after a record is created. Records without a linked account at ingestion time are excluded and will be picked up automatically in a future run once the account is populated.
 </div>
 
 <div class="note-box">
