@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS Adoption Documentation</title>
+    <style>
+        :root {
+            --bg:            #0f1c22;
+            --surface:       #0d191f;
+            --card:          #233038;
+            --border:        #2d4550;
+            --border-light:  #1a2e38;
+            --accent-blue:   #58a6ff;
+            --accent-green:  #3fb950;
+            --accent-orange: #d29922;
+            --accent-purple: #bc8cff;
+            --text-primary:  #deeaf0;
+            --text-secondary:#9aadb5;
+            --text-muted:    #7a9099;
+            /* Funnel stage colors — from Tableau workbook */
+            --c-eligible:   #d7ce9f;
+            --c-activation: #94d0c0;
+            --c-adoption:   #52cb90;
+            --c-stickiness: #0993a8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 13px;
+        }
+
+        /* ── Header ─────────────────────────────────────────── */
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .logo-area { display: flex; align-items: baseline; gap: 14px; }
+        .logo-area h1 { font-size: 17px; font-weight: 700; }
+        .header-meta { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+
+        nav { margin-left: auto; display: flex; gap: 6px; }
+
+        .tab-btn {
+            padding: 7px 22px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: transparent;
+            transition: all 0.15s;
+        }
+        .tab-btn:hover { background: var(--card); color: var(--text-primary); }
+        .tab-btn.active {
+            background: var(--accent-blue);
+            color: #0f1c22;
+            font-weight: 700;
+        }
+
+
+        /* ── Main ────────────────────────────────────────────── */
+        main { max-width: 100%; margin: 0 auto; padding: 20px 40px 48px; }
+
+        .section { display: none; }
+        .section.active { display: block; }
+
+        .section-heading { margin-bottom: 20px; }
+        .section-heading h2 { font-size: 24px; font-weight: 700; }
+        .section-heading p  { color: var(--text-secondary); margin-top: 4px; }
+
+        /* ── Product pills (Security) ────────────────────────── */
+        .product-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .product-pill {
+            padding: 5px 14px; border-radius: 20px;
+            font-size: 12px; font-weight: 600; border: 1px solid;
+        }
+        .pill-jas      { background:#1a2f4b; color:#58a6ff;  border-color:#1f4068; }
+        .pill-curation { background:#1b3a2f; color:#3fb950;  border-color:#1e4d2b; }
+        .pill-security { background:#3b2a4b; color:#bc8cff;  border-color:#4a3060; }
+
+        /* ── Two-column grid ─────────────────────────────────── */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+
+        /* ── Card ────────────────────────────────────────────── */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .card-header h3 { font-size: 15px; font-weight: 700; }
+
+        .card-body { padding: 18px; }
+
+        /* ── Card section ────────────────────────────────────── */
+        .cs { margin-bottom: 20px; }
+        .cs:last-child { margin-bottom: 0; }
+
+        .cs-title {
+            font-size: 10px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.8px;
+            color: var(--text-muted); margin-bottom: 9px;
+        }
+
+        .body-text {
+            font-size: 12px; color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .source-chip {
+            display: inline-block; margin-top: 7px;
+            background: #0d191f; border: 1px solid var(--border);
+            border-radius: 4px; padding: 2px 8px;
+            font-size: 11px; color: #e06c75;
+        }
+
+        /* ── Divider ─────────────────────────────────────────── */
+        .div { height: 1px; background: var(--border); margin: 18px 0; }
+
+        /* ── Rule boxes ──────────────────────────────────────── */
+        .rule {
+            background: #0d191f;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin-bottom: 7px;
+            border-left: 3px solid var(--accent-blue);
+        }
+        .rule.orange { border-left-color: var(--accent-orange); }
+        .rule.green  { border-left-color: var(--accent-green); }
+        .rule.purple { border-left-color: var(--accent-purple); }
+        .rule.subtle      { border-left-color: #4e7a9a; }
+        .rule.subtle-teal { border-left-color: #3d8a72; }
+        .rule.ttv1   { border-left-color: #b48efa; }
+        .rule.ttv2   { border-left-color: #f0956a; }
+        .rule:last-child { margin-bottom: 0; }
+
+        .rule-title {
+            font-size: 10px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .rule .rule-title              { color: var(--accent-blue); }
+        .rule.orange .rule-title       { color: var(--accent-orange); }
+        .rule.green  .rule-title       { color: var(--accent-green); }
+        .rule.purple .rule-title       { color: var(--accent-purple); }
+        .rule.subtle      .rule-title  { color: #6a9cbe; }
+        .rule.subtle-teal .rule-title  { color: #5aaa88; }
+        .rule.ttv1 .rule-title         { color: #b48efa; }
+        .rule.ttv2 .rule-title         { color: #f0956a; }
+
+        .rule p { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+        /* ── Filter list ─────────────────────────────────────── */
+        .filter-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+        .filter-item {
+            display: flex; align-items: flex-start; gap: 8px;
+            font-size: 12px; color: var(--text-secondary); line-height: 1.5;
+        }
+        .filter-item::before {
+            content: '→'; color: var(--accent-blue);
+            font-size: 11px; margin-top: 1px; flex-shrink: 0;
+        }
+
+        /* ── Stage table ─────────────────────────────────────── */
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th {
+            text-align: left; padding: 7px 10px;
+            color: var(--text-muted); font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            font-size: 10px; border-bottom: 1px solid var(--border);
+        }
+        td {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border-light);
+            color: var(--text-secondary); vertical-align: top;
+        }
+        tr:last-child td { border-bottom: none; }
+
+        .stage {
+            display: inline-block; padding: 2px 8px;
+            border-radius: 4px; font-size: 11px;
+            font-weight: 600; white-space: nowrap;
+        }
+        .s-eligible   { background: rgba(215,206,159,.12); color: var(--c-eligible);   border: 1px solid rgba(215,206,159,.25); }
+        .s-activation { background: rgba(148,208,192,.12); color: var(--c-activation); border: 1px solid rgba(148,208,192,.25); }
+        .s-adoption   { background: rgba( 82,203,144,.12); color: var(--c-adoption);   border: 1px solid rgba( 82,203,144,.25); }
+        .s-stickiness { background: rgba(  9,147,168,.15); color: var(--c-stickiness); border: 1px solid rgba(  9,147,168,.30); }
+
+        /* ── TaskRay groups ──────────────────────────────────── */
+        .group-list { display: flex; flex-direction: column; gap: 5px; }
+        .group-row  { display: flex; align-items: center; gap: 10px; font-size: 12px; }
+        .g-badge {
+            padding: 2px 9px; border-radius: 4px;
+            font-size: 10px; font-weight: 700; white-space: nowrap;
+        }
+        .g0 { background: rgba(215,206,159,.12); color: var(--c-eligible);   border: 1px solid rgba(215,206,159,.25); }
+        .g1 { background: rgba(148,208,192,.12); color: var(--c-activation); border: 1px solid rgba(148,208,192,.25); }
+        .g2 { background: rgba( 82,203,144,.12); color: var(--c-adoption);   border: 1px solid rgba( 82,203,144,.25); }
+        .g3 { background: rgba(  9,147,168,.15); color: var(--c-stickiness); border: 1px solid rgba(  9,147,168,.30); }
+        .g-values { color: var(--text-muted); font-size: 11px; }
+
+        /* ── Discrepancy examples ────────────────────────────── */
+        .disc-list { margin-top: 6px; padding-left: 16px; }
+        .disc-list li {
+            font-size: 12px; color: var(--text-muted);
+            margin-top: 4px; line-height: 1.5;
+        }
+
+        /* ── Side-by-side source + rules row ────────────────── */
+        .cs-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .cs-row > .cs { margin-bottom: 0; }
+
+        /* ── Grace period table ──────────────────────────────── */
+        .grace-table th { background: #0d191f; }
+
+        /* ── Footer ──────────────────────────────────────────── */
+        footer {
+            text-align: center; padding: 28px;
+            color: var(--text-muted); font-size: 11px;
+            border-top: 1px solid var(--border); margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ════════════════════ HEADER ════════════════════ -->
+<header>
+    <div class="logo-area">
+        <h1>CS Adoption Documentation</h1>
+        <span class="header-meta">Data covers a rolling 24-month window &nbsp;·&nbsp; Current month data available from the 3rd onward</span>
+    </div>
+    <nav>
+        <button class="tab-btn active" onclick="switchTab('devops', this)">DevOps</button>
+        <button class="tab-btn"        onclick="switchTab('security', this)">Security</button>
+    </nav>
+</header>
+
+<main>
+
+<!-- ════════════════════ DEVOPS ════════════════════ -->
+<section class="section active" id="section-devops">
+
+    <div class="section-heading">
+        <h2>DevOps</h2>
+        <p>Tracks Artifactory adoption across Cloud and Self-Hosted deployments at the subscription-month level</p>
+    </div>
+
+    <div class="two-col">
+
+        <!-- ── Cloud ── -->
+        <div class="card">
+            <div class="card-header"><h3>Cloud</h3></div>
+            <div class="card-body">
+                <div class="cs-row sync-top-cloud">
+                    <div class="cs">
+                        <div class="cs-title">Data Source</div>
+                        <p class="body-text">
+                            Adoption metrics are sourced from the product analytics table
+                            <span class="source-chip" style="display:inline;vertical-align:middle;color:#e06c75;border-color:#2d4550;">analysts.devops_artifactory_highvalue_interactions</span>
+                            which provides a daily True/False flag per subscription for each funnel stage
+                            (Activation, Adoption, Stickiness). Stage definitions follow the
+                            <a href="https://docs.google.com/document/d/1O92U-CQu70nm62Np7YvefjBkO_-epxtADQUoR2gXg3M/edit?tab=t.0#heading=h.rf52og6m6bok"
+                               target="_blank"
+                               style="color:var(--accent-blue); text-decoration:none;">
+                                <svg style="width:11px;height:11px;vertical-align:middle;margin-right:2px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Artifactory North Star Metric documentation
+                            </a>.
+                            Daily flags are then aggregated to the subscription-month level using the rules on the right.
+                        </p>
+                    </div>
+                    <div class="cs">
+                        <div class="cs-title">Monthly Evaluation Rules</div>
+                        <div class="rule subtle">
+                            <div class="rule-title">Past Months</div>
+                            <p>The adoption funnel status is determined by the data recorded on the <strong>last day</strong> of that month.</p>
+                        </div>
+                        <div class="rule subtle-teal" style="margin-top:7px;">
+                            <div class="rule-title">Current Active Month</div>
+                            <p>The most recent available data point is used, regardless of where we are in the month.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="div"></div>
+                <div class="cs sync-filters-cloud">
+                    <div class="cs-title">Applied Filters</div>
+                    <ul class="filter-list">
+                        <li class="filter-item">Test accounts and subscriptions with a future start date are excluded.</li>
+                        <li class="filter-item">Limited to subscriptions tied to Enterprise X or Enterprise+ opportunities.</li>
+                        <li class="filter-item">For subscriptions tied to a co-termed contract, the timeline is shown up to that co-term month.</li>
+                    </ul>
+                </div>
+                <div class="div"></div>
+                <div class="cs sync-devops-funnel-cloud">
+                    <div class="cs-title">Adoption Funnel</div>
+                    <p class="body-text" style="margin-bottom:9px">Stage flags are computed by Product Analytics for consistent core metrics.</p>
+                    <div style="background:var(--bg);border-radius:8px;padding:12px;margin-top:8px;">
+                    <table>
+                        <colgroup><col style="width:100px;"><col><col style="width:160px;"></colgroup>
+                        <thead><tr><th>Stage</th><th>Description</th><th>Rate</th></tr></thead>
+                        <tbody>
+                            <tr><td><span class="stage s-eligible">Eligible</span></td>    <td><strong>Baseline Cohort:</strong> Active subscriptions meeting the baseline product and contract filtering criteria.</td><td style="white-space:nowrap;">Baseline Denominator</td></tr>
+                            <tr><td><span class="stage s-activation">Activation</span></td><td><strong>First Value Realized:</strong> Subscription is actively uploading packages AND has logged at least one advanced HAPI feature interaction.</td><td style="white-space:nowrap;">Activation ÷ Eligible</td></tr>
+                            <tr><td><span class="stage s-adoption">Adoption</span></td>    <td><strong>Value is Routine:</strong> Subscription achieves deep, integrated usage, maintaining a Normalized HAPI score &gt; 0.1 (at least 1 high-value interaction for every 10 uploads).</td><td style="white-space:nowrap;">Adoption ÷ Eligible</td></tr>
+                            <tr><td><span class="stage s-stickiness">Stickiness</span></td><td><strong>Value is Broad:</strong> Subscription is deeply embedded, meeting the Adopted threshold while actively utilizing ≥ 3 distinct HAPI feature categories simultaneously.</td><td style="white-space:nowrap;">Stickiness ÷ Eligible</td></tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Self Hosted ── -->
+        <div class="card">
+            <div class="card-header"><h3>Self Hosted</h3></div>
+            <div class="card-body">
+                <div class="cs-row sync-top-sh">
+                    <div class="cs">
+                        <div class="cs-title">Data Source</div>
+                        <p class="body-text">
+                            Tracked using License Utilization data from the Salesforce <strong>HUD</strong> object, pre-aggregated into a monthly history table. For each subscription-month, the highest utilization percentage across all associated HUDs is used.
+                        </p>
+                        <p style="margin-top:10px; font-size:11px; color:var(--text-muted); font-style:italic;"><strong style="font-style:normal;">Timeline:</strong> The HUD timeline includes only months where the HUD is in Active status. It runs until the subscription's expiry date if one is set, or continues as long as the HUD stays Active if no expiry is defined.</p>
+                    </div>
+                    <div class="cs">
+                        <div class="cs-title">Monthly Evaluation Rules</div>
+                        <div class="rule subtle">
+                            <div class="rule-title">Past Months</div>
+                            <p>For each HUD, the last recorded reading of that month is used. Where a subscription has multiple HUDs, the one with the highest utilization percentage is selected.</p>
+                        </div>
+                        <div class="rule subtle-teal" style="margin-top:7px;">
+                            <div class="rule-title">Current Active Month</div>
+                            <p>The most recent available HUD reading is used. Where multiple HUDs exist, the highest utilization is selected.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="div"></div>
+                <div class="cs sync-filters-sh">
+                    <div class="cs-title">Applied Filters</div>
+                    <ul class="filter-list">
+                        <li class="filter-item">Test accounts and subscriptions with a future start date are excluded.</li>
+                        <li class="filter-item">Limited to subscriptions tied to Enterprise X or Enterprise+ opportunities (Cloud variants excluded).</li>
+                        <li class="filter-item">For subscriptions tied to a co-termed contract, the timeline is shown up to that co-term month.</li>
+                    </ul>
+                </div>
+                <div class="div"></div>
+                <div class="cs sync-devops-funnel-sh">
+                    <div class="cs-title">Adoption Funnel</div>
+                    <p class="body-text" style="margin-bottom:9px">Stage is determined by the license utilization percentage from the Salesforce HUD object.</p>
+                    <div style="background:var(--bg);border-radius:8px;padding:12px;margin-top:8px;">
+                    <table>
+                        <thead><tr><th>Stage</th><th>Criteria</th><th>Rate</th></tr></thead>
+                        <tbody>
+                            <tr><td><span class="stage s-eligible">Eligible</span></td>    <td>Subscription is active and has HUD data</td>                        <td>Denominator for all rates</td></tr>
+                            <tr><td><span class="stage s-activation">Activation</span></td><td>License utilization &gt; 0%</td>                                    <td>Activated ÷ Eligible</td></tr>
+                            <tr><td><span class="stage s-adoption">Adoption</span></td>    <td>Utilization 65–80% AND ≥ 1 production license in use</td>            <td>Adopted ÷ Eligible</td></tr>
+                            <tr><td><span class="stage s-stickiness">Stickiness</span></td><td>Utilization ≥ 81% AND ≥ 1 production license in use</td>             <td>Sticky ÷ Eligible</td></tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ════════════════════ SECURITY ════════════════════ -->
+<section class="section" id="section-security">
+
+    <div class="section-heading">
+        <h2>Security</h2>
+        <p>Tracks JAS and Curation adoption across Cloud and Self-Hosted deployments at the subscription-month level</p>
+    </div>
+
+    <div class="two-col">
+
+        <!-- ── Security Cloud ── -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Cloud</h3>
+            </div>
+            <div class="card-body">
+
+                <div class="cs-row sync-top-sec-cloud">
+                    <div class="cs">
+                        <div class="cs-title">Data Source</div>
+                        <p class="body-text">
+                            Adoption metrics are sourced from the product analytics table
+                            <span class="source-chip" style="display:inline;vertical-align:middle;color:#e06c75;border-color:#2d4550;">analysts.fact_security_customers_history_adoption_metrics</span>
+                            which provides a daily True/False flag per subscription for each JAS and Curation adoption stage.
+                            Daily flags are then aggregated to the subscription-month level using the rules on the right.
+                        </p>
+                    </div>
+                    <div class="cs">
+                        <div class="cs-title">Monthly Evaluation Rules</div>
+                        <div class="rule subtle">
+                            <div class="rule-title">Past Months</div>
+                            <p>The adoption funnel status is determined by the data recorded on the <strong>last day</strong> of that month.</p>
+                        </div>
+                        <div class="rule subtle-teal" style="margin-top:7px;">
+                            <div class="rule-title">Current Active Month</div>
+                            <p>The most recent available data point is used, regardless of where we are in the month.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="div"></div>
+
+                <div class="cs sync-filters-sec-cloud">
+                    <div class="cs-title">Applied Filters</div>
+                    <ul class="filter-list">
+                        <li class="filter-item">Only subscriptions with at least one active JAS or Curation product</li>
+                    </ul>
+                </div>
+
+                <div class="div"></div>
+
+                <div class="cs sync-funnel-cloud">
+                    <div class="cs-title">Adoption Funnel</div>
+                    <p class="body-text" style="margin-bottom:9px">Evaluated independently per product. Stage flags are pre-computed by the product analytics team.</p>
+                    <div style="background:var(--bg);border-radius:8px;padding:12px;margin-top:8px;">
+                    <table>
+                        <thead>
+                            <tr><th>Stage</th><th>JAS Definition</th><th>Curation Definition</th><th style="white-space:nowrap;">Rate</th><th style="text-align:center;">TTV</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="stage s-eligible">Eligible</span></td>
+                                <td>60 days have passed since the purchase date</td>
+                                <td>60 days have passed since the purchase date</td>
+                                <td style="white-space:nowrap;">Baseline Denominator</td>
+                                <td style="text-align:center;color:var(--text-muted);">—</td>
+                            </tr>
+                            <tr>
+                                <td><span class="stage s-activation">Activation</span></td>
+                                <td>At least one repository is configured for JAS, or a shift-left scan was initiated in the past six weeks</td>
+                                <td>Customer activates Curation (clicks 'on')</td>
+                                <td style="white-space:nowrap;">Activated ÷ Eligible</td>
+                                <td style="text-align:center;">1</td>
+                            </tr>
+                            <tr>
+                                <td><span class="stage s-adoption">Adoption</span></td>
+                                <td>Feature usage for 2+2+2 weeks within 3 consecutive periods (at least once, in any period)</td>
+                                <td>Customer is meaningfully using Curation — at least one of: Curation covers ≥50% of supported repository traffic (last 14 days); OR a block policy exists with &gt;1 block in past 2 weeks; OR a dry-run policy created in last 3 months with blocked coverage</td>
+                                <td style="white-space:nowrap;">Adopted ÷ Eligible</td>
+                                <td style="text-align:center;">2</td>
+                            </tr>
+                            <tr>
+                                <td><span class="stage s-stickiness">Stickiness</span></td>
+                                <td>Adopted AND used ≥2 features in the past 6 weeks</td>
+                                <td>Adopted PLUS sustained real policy enforcement: must have a block policy, AND meet ≥1 block threshold per category (last 14 days): Malicious &gt;0 (last 6 months); Legal &gt;1; Security ≥5; Operational ≥10</td>
+                                <td style="white-space:nowrap;">Sticky ÷ Eligible</td>
+                                <td style="text-align:center;">2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                    <p class="body-text" style="margin-top:9px; font-size:11px; color:var(--text-muted); font-style:italic;"><strong>Grace Period:</strong> For newly added JAS or Curation products, a 60-day onboarding period applies before the subscription becomes eligible for adoption tracking.</p>
+                </div>
+
+                <div class="div sync-ttv-divider-cloud"></div>
+
+                <div class="cs sync-ttv-cloud">
+                    <div class="cs-title">Time to Value (TTV)</div>
+                    <div class="sync-ttv-intro-cloud">
+                    <p class="body-text" style="margin-bottom:4px">
+                        Tracks how long each product takes to reach an adoption milestone, bucketed as
+                        <strong>0–90 days · 91–180 days · 181+ days · Pending</strong>.
+                    </p>
+                    <p class="body-text" style="margin-bottom:4px">
+                        Products that have not yet reached any milestone are placed in the <em>Pending</em> bucket.
+                    </p>
+                    <p class="body-text" style="margin-bottom:9px">
+                        The date axis represents the <em>product start month</em>, not the month the milestone was reached.
+                    </p>
+                    </div>
+                    <div style="height:12px;"></div>
+                    <div class="rule ttv1">
+                        <div class="rule-title">TTV 1</div>
+                        <p>Days from the product start date (first day included in the subscription) to first Activation.</p>
+                    </div>
+                    <div class="rule ttv2">
+                        <div class="rule-title">TTV 2</div>
+                        <p>Days from first Activation to first Adoption. If Activation and Adoption are reached on the same day, TTV 2 = 0 days.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── Security Self-Hosted ── -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Self Hosted</h3>
+            </div>
+            <div class="card-body">
+
+                <div class="sync-top-sec-sh" style="margin-bottom:20px;">
+                    <div class="cs-row" style="margin-bottom:0;">
+                        <div class="cs">
+                            <div class="cs-title">Data Source</div>
+                            <p class="body-text">
+                                Adoption is measured using the Salesforce <strong>TaskRay</strong> object, which lives under
+                                the HUD framework. Only TaskRays with Activity type <strong>JAS</strong> or <strong>Curation</strong>
+                                are included. The <em>Adoption Stage</em> field in TaskRay drives all funnel logic.
+                            </p>
+                            <p style="margin-top:10px; font-size:11px; color:var(--text-muted); font-style:italic; line-height:1.6;">
+                                <strong style="font-style:normal;">Deduplication:</strong> When multiple TaskRays of the same activity exist on the same HUD in a given month, the one with the most recently updated adoption stage is used. When multiple HUDs exist on the same subscription for the same activity, the HUD whose TaskRay is at the most advanced stage is selected.
+                            </p>
+                        </div>
+                        <div class="cs">
+                            <div class="cs-title">Monthly Evaluation Rules</div>
+                            <div class="rule subtle">
+                                <div class="rule-title">Past Months</div>
+                                <p>The adoption funnel status is determined by the TaskRay reading recorded on the <strong>last day</strong> of that month.</p>
+                            </div>
+                            <div class="rule subtle-teal" style="margin-top:7px;">
+                                <div class="rule-title">Current Active Month</div>
+                                <p>The most recent available TaskRay reading is used.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="margin-top:10px; font-size:11px; color:var(--text-muted); font-style:italic; line-height:1.6;">
+                        <strong style="font-style:normal;">Timeline:</strong> The HUD timeline is capped by the subscription's expiry date - months beyond that point are excluded. Within that window, the TaskRay timeline extends through the last active month of the linked HUD. If a TaskRay has recorded activity beyond that point (due to Salesforce data inconsistencies), the later activity is preserved.
+                    </p>
+                </div>
+
+                <div class="div"></div>
+
+                <div class="cs sync-filters-sec-sh">
+                    <div class="cs-title">Applied Filters</div>
+                    <ul class="filter-list">
+                        <li class="filter-item">Test accounts and subscriptions with a future start date are excluded.</li>
+                        <li class="filter-item">Limited to subscriptions tied to Enterprise X or Enterprise+ opportunities (Cloud variants excluded).</li>
+                        <li class="filter-item">Include only active Curation or JAS products.</li>
+                        <li class="filter-item">For subscriptions tied to a co-termed contract, the timeline is shown up to that co-term month.</li>
+                    </ul>
+                </div>
+
+                <div class="div"></div>
+
+                <div class="cs sync-funnel-sh">
+                    <div class="cs-title">Adoption Funnel</div>
+                    <p class="body-text" style="margin-bottom:9px">Evaluated independently per product (JAS and Curation). Stage is based on the last TaskRay reading of each month.</p>
+                    <div style="background:var(--bg);border-radius:8px;padding:12px;margin-top:8px;">
+                    <table>
+                        <thead>
+                            <tr><th>Stage</th><th>TaskRay Adoption Stage Values</th><th>Rate</th><th style="text-align:center;">TTV</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="stage s-eligible">Eligible</span></td>    <td>Product is active and has passed its grace period</td>                                                                          <td>Denominator for all rates</td><td style="text-align:center;color:var(--text-muted);">—</td></tr>
+                            <tr><td><span class="stage s-activation">Activation</span></td><td>"Activation"<br>"Installation / Configuration"<br>"Adoption Initiation"</td>                                                    <td>Activated ÷ Eligible</td>   <td style="text-align:center;">1</td></tr>
+                            <tr><td><span class="stage s-adoption">Adoption</span></td>    <td>"Implementation"</td>                                                                                                           <td>Adopted ÷ Eligible</td>     <td style="text-align:center;">2</td></tr>
+                            <tr><td><span class="stage s-stickiness">Stickiness</span></td><td>"Stickiness"</td>                                                                                                               <td>Sticky ÷ Eligible</td>      <td style="text-align:center;">2</td></tr>
+                        </tbody>
+                    </table>
+                    </div>
+                    <p class="body-text" style="margin-top:9px; font-size:11px; color:var(--text-muted); font-style:italic;"><strong>Grace Period:</strong> For new products (not present in the previous contract), the subscription becomes Eligible 60 days after the TaskRay start date. For existing products, it is eligible from the TaskRay start date immediately.</p>
+                </div>
+
+                <div class="div sync-ttv-divider-sh"></div>
+
+                <div class="cs sync-ttv-sh">
+                    <div class="cs-title">Time to Value (TTV)</div>
+                    <div class="sync-ttv-intro-sh">
+                    <p class="body-text" style="margin-bottom:4px">
+                        TTV in Self Hosted applies to <strong>new products only</strong>.
+                    </p>
+                    <p class="body-text" style="margin-bottom:4px">
+                        Tracks how long each product takes to reach an adoption milestone, bucketed as
+                        <strong>0–90 days · 91–180 days · 181+ days · Pending</strong>.
+                    </p>
+                    <p class="body-text" style="margin-bottom:4px">
+                        Products that have not yet reached any milestone are placed in the <em>Pending</em> bucket.
+                    </p>
+                    <p class="body-text" style="margin-bottom:4px">
+                        The date axis represents the <em>product start month</em>, not the month the milestone was reached.
+                    </p>
+                    </div>
+                    <div style="height:12px;"></div>
+                    <div class="rule ttv1">
+                        <div class="rule-title">TTV 1</div>
+                        <p>Days from the TaskRay start date until the adoption stage first reaches <strong>Activation</strong>, <strong>Installation / Configuration</strong>, or <strong>Adoption Initiation</strong>.</p>
+                    </div>
+                    <div class="rule ttv2" style="margin-top:7px">
+                        <div class="rule-title">TTV 2</div>
+                        <p>Days from first Activation until the adoption stage first reaches <strong>Implementation</strong> or <strong>Stickiness</strong>.</p>
+                    </div>
+                    <p class="body-text" style="margin-top:9px; font-style:italic; color:var(--text-muted);">
+                        Note: If a subscription skips Activation entirely and jumps directly to Implementation (e.g. moving from New Project straight to Implementation), TTV 1 is assigned the Implementation date and TTV 2 = 0 days.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+</main>
+
+<footer>
+    Last updated June 2026
+</footer>
+
+<script>
+function switchTab(tab, el) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('section-' + tab).classList.add('active');
+    el.classList.add('active');
+    syncHeights();
+}
+
+function syncHeights() {
+    const selectors = [
+        '.sync-top-cloud', '.sync-top-sh',
+        '.sync-filters-cloud', '.sync-filters-sh',
+        '.sync-top-sec-sh',
+        '.sync-funnel-cloud', '.sync-funnel-sh',
+        '.sync-devops-funnel-cloud', '.sync-devops-funnel-sh',
+        '.sync-ttv-cloud', '.sync-ttv-sh',
+        '.sync-ttv-intro-cloud', '.sync-ttv-intro-sh'
+    ];
+    // Reset min-heights and TTV margin adjustments
+    selectors.forEach(sel => {
+        document.querySelectorAll(sel).forEach(el => el.style.minHeight = '');
+    });
+    document.querySelectorAll('.sync-ttv-cloud, .sync-ttv-sh').forEach(el => el.style.marginTop = '');
+
+    // Helper: sync a pair to the same min-height
+    function syncPair(selA, selB) {
+        const a = document.querySelector(selA);
+        const b = document.querySelector(selB);
+        if (a && b) {
+            const h = Math.max(a.offsetHeight, b.offsetHeight);
+            a.style.minHeight = h + 'px';
+            b.style.minHeight = h + 'px';
+        }
+    }
+
+    // DevOps: top section + filters
+    syncPair('.sync-top-cloud', '.sync-top-sh');
+    syncPair('.sync-filters-cloud', '.sync-filters-sh');
+
+    // Sync DevOps funnel table rows first, then sync the whole funnel section
+    const devopsCloudRows = document.querySelectorAll('.sync-devops-funnel-cloud table tbody tr');
+    const devopsShRows    = document.querySelectorAll('.sync-devops-funnel-sh table tbody tr');
+    if (devopsCloudRows.length && devopsShRows.length && devopsCloudRows.length === devopsShRows.length) {
+        devopsCloudRows.forEach(r => r.style.height = '');
+        devopsShRows.forEach(r => r.style.height = '');
+        devopsCloudRows.forEach((cr, i) => {
+            const sr = devopsShRows[i];
+            const h = Math.max(cr.offsetHeight, sr.offsetHeight);
+            cr.style.height = h + 'px';
+            sr.style.height = h + 'px';
+        });
+    }
+    // Sync funnel section height AFTER row syncing
+    syncPair('.sync-devops-funnel-cloud', '.sync-devops-funnel-sh');
+
+    // Security: top section + filters
+    syncPair('.sync-top-sec-cloud', '.sync-top-sec-sh');
+    syncPair('.sync-filters-sec-cloud', '.sync-filters-sec-sh');
+
+    // Sync Security funnel table rows first, then sync the whole funnel section
+    const cloudRows = document.querySelectorAll('.sync-funnel-cloud table tbody tr');
+    const shRows    = document.querySelectorAll('.sync-funnel-sh table tbody tr');
+    if (cloudRows.length && shRows.length && cloudRows.length === shRows.length) {
+        cloudRows.forEach(r => r.style.height = '');
+        shRows.forEach(r => r.style.height = '');
+        cloudRows.forEach((cr, i) => {
+            const h = Math.max(cr.offsetHeight, shRows[i].offsetHeight);
+            cr.style.height = h + 'px';
+            shRows[i].style.height = h + 'px';
+        });
+    }
+    // Sync funnel section height AFTER row syncing so Grace Period aligns
+    syncPair('.sync-funnel-cloud', '.sync-funnel-sh');
+
+    // Sync TTV intro text so TTV 1 / TTV 2 boxes start at the same line
+    syncPair('.sync-ttv-intro-cloud', '.sync-ttv-intro-sh');
+
+    // Security: align TTV sections to start at the same vertical position
+    const ttvCloud = document.querySelector('.sync-ttv-cloud');
+    const ttvSh    = document.querySelector('.sync-ttv-sh');
+    if (ttvCloud && ttvSh) {
+        void ttvCloud.offsetHeight;
+        void ttvSh.offsetHeight;
+        const topCloud = ttvCloud.getBoundingClientRect().top;
+        const topSh    = ttvSh.getBoundingClientRect().top;
+        const cloudBody = ttvCloud.closest('.card-body');
+        const shBody    = ttvSh.closest('.card-body');
+        console.log('[card-body] cloud top:', cloudBody ? cloudBody.getBoundingClientRect().top.toFixed(1) : 'N/A', '| sh top:', shBody ? shBody.getBoundingClientRect().top.toFixed(1) : 'N/A');
+        console.log('[TTV offsetTop within card-body] cloud:', ttvCloud.offsetTop, '| sh:', ttvSh.offsetTop);
+        console.log('[TTV sync] topCloud:', topCloud.toFixed(1), '| topSH:', topSh.toFixed(1), '| diff:', (topSh - topCloud).toFixed(1));
+        if (topCloud < topSh) {
+            ttvCloud.style.marginTop = (topSh - topCloud) + 'px';
+        } else if (topSh < topCloud) {
+            ttvSh.style.marginTop = (topCloud - topSh) + 'px';
+        }
+    }
+}
+
+window.addEventListener('load', syncHeights);
+window.addEventListener('resize', syncHeights);
+
+window.addEventListener('DOMContentLoaded', () => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash === 'security') {
+        const btn = document.querySelector('.tab-btn:not(.active)');
+        switchTab('security', btn);
+    }
+});
+</script>
+
+</body>
+</html>
