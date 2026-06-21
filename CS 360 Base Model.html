@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
+<!-- saved from url=(0071)https://yairb7.github.io/my-personal-space/CS%20360%20Base%20Model.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
   <title>CS 360 Base Model</title>
   <style>
     /* ── Base ─────────────────────────────────────────────── */
@@ -96,7 +96,7 @@
     .meta { color: #666; font-size: 10pt; font-style: italic; margin-top: 28px; }
   </style>
 </head>
-<body>
+<body data-new-gr-c-s-check-loaded="14.1304.0" data-gr-ext-installed="">
 
 <!-- ── TITLE BLOCK ────────────────────────────────────────── -->
 <h1>CS 360 Base Model</h1>
@@ -111,16 +111,16 @@
 <div class="toc">
   <div class="toc-title">Table of Contents</div>
   <ol>
-    <li><a href="#global-rules">Global Rules</a></li>
-    <li><a href="#interaction-types">Interaction Types &amp; Population Rules</a>
+    <li><a href="https://yairb7.github.io/my-personal-space/CS%20360%20Base%20Model.html#global-rules">Global Rules</a></li>
+    <li><a href="https://yairb7.github.io/my-personal-space/CS%20360%20Base%20Model.html#interaction-types">Interaction Types &amp; Population Rules</a>
       <ul>
-        <li><a href="#cases">Case</a></li>
-        <li><a href="#standalone-emails">Email</a></li>
-        <li><a href="#gong">Gong</a></li>
+        <li><a href="https://yairb7.github.io/my-personal-space/CS%20360%20Base%20Model.html#cases">Case</a></li>
+        <li><a href="https://yairb7.github.io/my-personal-space/CS%20360%20Base%20Model.html#standalone-emails">Email</a></li>
+        <li><a href="https://yairb7.github.io/my-personal-space/CS%20360%20Base%20Model.html#gong">Gong</a></li>
       </ul>
     </li>
-    <li><a href="#output-fields">Output Fields</a></li>
-    <li><a href="#notes">Notes &amp; Open Items</a></li>
+    <li><a href="https://yairb7.github.io/my-personal-space/CS%20360%20Base%20Model.html#output-fields">Output Fields</a></li>
+    <li><a href="https://yairb7.github.io/my-personal-space/CS%20360%20Base%20Model.html#notes">Notes &amp; Open Items</a></li>
   </ol>
 </div>
 
@@ -137,14 +137,14 @@
     <div class="rule-body">
       <div style="margin-bottom:7px;">Based on <strong>thread start date</strong>. Only threads starting in or after <strong>January 2026</strong> are included.</div>
       <table style="width:100%; border-collapse:collapse; font-size:9pt; margin-bottom:7px;">
-        <tr>
+        <tbody><tr>
           <th style="background:#e8e8e8; color:#333; padding:3px 6px; font-size:8.5pt; text-align:left;">Type</th>
           <th style="background:#e8e8e8; color:#333; padding:3px 6px; font-size:8.5pt; text-align:left;">Thread Start</th>
         </tr>
         <tr><td style="border:1px solid #ddd; padding:3px 6px;">Case / Case Email</td><td style="border:1px solid #ddd; padding:3px 6px;">Parent case created date (own date if no parent)</td></tr>
         <tr><td style="border:1px solid #ddd; padding:3px 6px; background:#f5f8ff;">Email</td><td style="border:1px solid #ddd; padding:3px 6px; background:#f5f8ff;">Message date of the earliest email in thread</td></tr>
         <tr><td style="border:1px solid #ddd; padding:3px 6px;">Gong</td><td style="border:1px solid #ddd; padding:3px 6px;">Gong call created date</td></tr>
-      </table>
+      </tbody></table>
       <div style="background:#fff8e1; border-left:3px solid #f9a825; padding:5px 8px; font-size:9pt; line-height:1.4; border-radius:2px;"><strong>Exception:</strong> A pre-2026 case is included if it has email activity from January 2026 or later.</div>
     </div>
   </div>
@@ -173,22 +173,22 @@
     <div class="card-section">
       <div class="cs-label">What it is</div>
       <div class="cs-text">Each case thread contributes two row types:<br>
-        &bull; <strong>Case row</strong> — metadata (subject, open/close dates), the anchor row for the thread<br>
-        &bull; <strong>Case emails</strong> — all emails linked to the case, included for full LLM conversation context
+        • <strong>Case row</strong> — metadata (subject, open/close dates), the anchor row for the thread<br>
+        • <strong>Case emails</strong> — all emails linked to the case, included for full LLM conversation context
       </div>
     </div>
     <hr class="card-divider">
     <div class="card-section">
       <div class="cs-label">Applied Filters</div>
-      <div style="font-size:9.5pt; font-weight:bold; color:#2e7d32; margin-bottom:3px;">&#10003; Included when (any):</div>
+      <div style="font-size:9.5pt; font-weight:bold; color:#2e7d32; margin-bottom:3px;">✓ Included when (any):</div>
       <ul class="cs-ul">
-        <li>Case has &ge;1 linked email with <code>move_to_data_cloud__c = TRUE</code></li>
+        <li>Case has ≥1 linked email with <code>move_to_data_cloud__c = TRUE</code></li>
         <li>Or is the <strong>parent case</strong> of a qualifying case</li>
         <li>All emails in a triggered thread are included automatically</li>
         <li>Case emails are incoming only (customer-sent; JFrog reply emails are excluded)</li>
         <li>Linked account is present (<code>accountid</code> is not null)</li>
       </ul>
-      <div style="font-size:9.5pt; font-weight:bold; color:#c62828; margin:8px 0 4px 0;">&#10007; Excluded when (any field = TRUE):</div>
+      <div style="font-size:9.5pt; font-weight:bold; color:#c62828; margin:8px 0 4px 0;">✗ Excluded when (any field = TRUE):</div>
       <div>
         <span class="excl-pill">exclude_from_bi__c</span>
         <span class="excl-pill">internal_case__c</span>
@@ -200,7 +200,7 @@
     <div class="card-section">
       <div class="cs-label">Thread / Session</div>
       <table class="ts-table">
-        <tr>
+        <tbody><tr>
           <td style="font-weight:bold; background:#e8e8e8; width:90px;">Row type</td>
           <td style="font-weight:bold; background:#e8e8e8;">Thread</td>
           <td style="font-weight:bold; background:#e8e8e8;">Session</td>
@@ -215,7 +215,8 @@
           <td>Parent case ID &nbsp;(own ID if no parent)</td>
           <td>Email's own ID</td>
         </tr>
-      </table>
+      </tbody></table>
+      <div style="font-size:9.5pt; color:#555; margin-top:8px; line-height:1.5;">Since child cases share the parent's thread ID, any downstream scoring is applied at the thread (parent case) level - child cases do not receive a standalone score.</div>
     </div>
     <hr class="card-divider">
     <!-- Edge Case nested inside the Case card -->
@@ -230,13 +231,13 @@
             <div class="mlevel-note"><strong>Scale:</strong> 516 cases in multi-level chains out of ~380,000 total. Chains reach up to 8 levels deep. The depth-2 cutoff handles this cleanly with no extra joins.</div>
           </div>
           <div>
-            <p style="margin:0 0 7px 0;font-size:10pt;font-weight:bold;">Example: A &rarr; B &rarr; C &rarr; D &rarr; E &rarr; F &rarr; G</p>
+            <p style="margin:0 0 7px 0;font-size:10pt;font-weight:bold;">Example: A → B → C → D → E → F → G</p>
             <table style="font-size:9.5pt;">
-              <tr><th>Case</th><th>Depth</th><th>Included?</th><th>Reason</th></tr>
+              <tbody><tr><th>Case</th><th>Depth</th><th>Included?</th><th>Reason</th></tr>
               <tr><td><strong>A</strong></td><td>1 (root)</td><td style="color:#2e7d32;font-weight:bold">Yes</td><td>Root — no parent</td></tr>
               <tr><td><strong>B</strong></td><td>2</td><td style="color:#2e7d32;font-weight:bold">Yes</td><td>Parent (A) has no grandparent</td></tr>
-              <tr><td><strong>C &ndash; G</strong></td><td>3 – 7</td><td style="color:#c62828;font-weight:bold">No</td><td>Has a grandparent — excluded</td></tr>
-            </table>
+              <tr><td><strong>C – G</strong></td><td>3 – 7</td><td style="color:#c62828;font-weight:bold">No</td><td>Has a grandparent — excluded</td></tr>
+            </tbody></table>
           </div>
         </div>
       </div>
@@ -258,7 +259,7 @@
       <hr class="card-divider">
       <div class="card-section cs-filters-section">
         <div class="cs-label">Applied Filters</div>
-        <div style="font-size:9.5pt; font-weight:bold; color:#2e7d32; margin-bottom:3px;">&#10003; Included when (all):</div>
+        <div style="font-size:9.5pt; font-weight:bold; color:#2e7d32; margin-bottom:3px;">✓ Included when (all):</div>
         <ul class="cs-ul">
           <li><code>move_to_data_cloud__c = TRUE</code> on the individual email — only flagged emails are collected, even if other emails in the same thread are not flagged</li>
           <li>Email is incoming (sent by the customer, not JFrog)</li>
@@ -269,9 +270,9 @@
       <div class="card-section">
         <div class="cs-label">Thread / Session</div>
         <table class="ts-table">
-          <tr><td>Thread</td><td>ID of the <strong>earliest email</strong> in thread (by date)</td></tr>
+          <tbody><tr><td>Thread</td><td>ID of the <strong>earliest email</strong> in thread (by date)</td></tr>
           <tr><td>Session</td><td>Each individual email's own ID</td></tr>
-        </table>
+        </tbody></table>
       </div>
     </div>
   </div>
@@ -287,7 +288,7 @@
       <hr class="card-divider">
       <div class="card-section cs-filters-section">
         <div class="cs-label">Applied Filters</div>
-        <div style="font-size:9.5pt; font-weight:bold; color:#2e7d32; margin-bottom:3px;">&#10003; Included when (all):</div>
+        <div style="font-size:9.5pt; font-weight:bold; color:#2e7d32; margin-bottom:3px;">✓ Included when (all):</div>
         <ul class="cs-ul">
           <li><code>move_to_data_cloud__c = TRUE</code></li>
           <li><code>gong__call_id__c IS NOT NULL</code></li>
@@ -300,9 +301,9 @@
       <div class="card-section">
         <div class="cs-label">Thread / Session</div>
         <table class="ts-table">
-          <tr><td>Thread</td><td>Salesforce ID of the Gong call record</td></tr>
+          <tbody><tr><td>Thread</td><td>Salesforce ID of the Gong call record</td></tr>
           <tr><td>Session</td><td>Gong call ID (from Gong system)</td></tr>
-        </table>
+        </tbody></table>
       </div>
     </div>
   </div>
@@ -314,7 +315,7 @@
 <!-- ── 3. OUTPUT FIELDS ───────────────────────────────────── -->
 <div class="section-header" id="output-fields">3. Output Fields</div>
 <table>
-  <tr><th>Field</th><th>Description</th></tr>
+  <tbody><tr><th>Field</th><th>Description</th></tr>
   <tr><td><code>engagement_analysis_text_id</code></td><td>Unique row identifier (MD5 hash of record ID + type)</td></tr>
   <tr><td><code>engagement_channel_source_type</code></td><td>Interaction type: <code>Case</code>, <code>Email</code>, or <code>Gong</code></td></tr>
   <tr><td><code>engagement_analysis_text_thread</code></td><td>Thread root ID — groups all rows in the same conversation</td></tr>
@@ -325,7 +326,7 @@
   <tr><td><code>account_id</code></td><td>Salesforce Account ID for this interaction. <em>For Email: joined via the Task object.</em></td></tr>
   <tr><td><code>ingestion_status</code></td><td>Set to <code>Pending</code> on insert; updated by the scoring pipeline after LLM processing</td></tr>
   <tr><td><code>ingestion_timestamp</code></td><td>Timestamp when the record was inserted into the table</td></tr>
-</table>
+</tbody></table>
 
 <hr class="section-divider">
 
@@ -351,5 +352,26 @@
 
 <p class="meta">Last updated: May 2026</p>
 
-</body>
-</html>
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true" style="visibility: visible !important;"><template shadowrootmode="open"><style>
+      div.grammarly-desktop-integration {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select:none;
+        user-select:none;
+      }
+
+      div.grammarly-desktop-integration:before {
+        content: attr(data-content);
+      }
+    </style><div aria-label="grammarly-integration" role="group" tabindex="-1" class="grammarly-desktop-integration" data-content="{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;isUserDisabled&quot;:false}"></div></template></grammarly-desktop-integration></html>
