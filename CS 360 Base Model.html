@@ -216,7 +216,7 @@
         </tr>
       </tbody></table>
       <div style="font-size:9.5pt; color:#555; margin-top:8px; line-height:1.5;">If a parent case has <code>move_to_data_cloud = TRUE</code>, all its child case emails are automatically included in the pipeline - even if the child case itself does not have <code>move_to_data_cloud = TRUE</code>.</div>
-      <div style="font-size:9.5pt; color:#555; margin-top:6px; line-height:1.5;">Since child cases share the parent's thread ID, any downstream scoring is applied at the thread (parent case) level - child cases do not receive a standalone score.</div>
+      <div style="font-size:9.5pt; color:#555; margin-top:6px; line-height:1.5;">Since child cases share the parent's thread ID, any downstream scoring is applied at the thread (parent case) level - child cases do not receive a standalone score. In the Salesforce engagement feed, child cases will appear without a score and with a generic reason label applied on the DataCloud side.</div>
     </div>
     <hr class="card-divider">
     <!-- Edge Case nested inside the Case card -->
