@@ -255,7 +255,7 @@
 <header>
     <div class="logo-area">
         <h1>CS Adoption Documentation</h1>
-        <span class="header-meta">Data shown from January 2026 onward &nbsp;·&nbsp; Current month data available from the 3rd</span>
+        <span class="header-meta">Data shown from January 2026 onward</span>
     </div>
     <nav>
         <button class="tab-btn active" onclick="switchTab('security', this)">Security</button>
@@ -283,10 +283,14 @@
                     <div class="cs">
                         <div class="cs-title">Data Source</div>
                         <p class="body-text">
-                            Adoption metrics are sourced from the product analytics table
-                            <span class="source-chip" style="display:inline;vertical-align:middle;color:#e06c75;border-color:#2d4550;">analysts.devops_artifactory_highvalue_interactions</span>
-                            which provides a daily True/False flag per subscription for each funnel stage
-                            (Activation, Adoption, Stickiness). Stage definitions follow the
+                            Adoption metrics are sourced from three product analytics tables:
+                            <span class="source-chip" style="display:inline;vertical-align:middle;color:#e06c75;border-color:#2d4550;">analysts_pne_rt_gold.artifactory_adoption</span>
+                            (daily funnel flags),
+                            <span class="source-chip" style="display:inline;vertical-align:middle;color:#e06c75;border-color:#2d4550;">analysts_pne_rt_gold.artifactory_hapi</span>
+                            (HAPI score &amp; HVI category flags), and
+                            <span class="source-chip" style="display:inline;vertical-align:middle;color:#e06c75;border-color:#2d4550;">analysts_pne_rt_gold.artifactory_hapi_segments</span>
+                            (coaching signals). All three are joined daily on <code style="font-size:11px;color:var(--text-muted);">store_account_number</code>.
+                            Stage definitions follow the
                             <a href="https://docs.google.com/document/d/1O92U-CQu70nm62Np7YvefjBkO_-epxtADQUoR2gXg3M/edit?tab=t.0#heading=h.rf52og6m6bok"
                                target="_blank"
                                style="color:var(--accent-blue); text-decoration:none;">
@@ -319,7 +323,7 @@
                 <div class="div"></div>
                 <div class="cs sync-devops-funnel-cloud">
                     <div class="cs-title">Adoption Funnel</div>
-                    <p class="body-text" style="margin-bottom:9px">Stage flags are computed by Product Analytics for consistent core metrics.</p>
+                    <p class="body-text" style="margin-bottom:9px">Stage flags are computed by Product Analytics for consistent core metrics. &nbsp;<a href="https://docs.google.com/document/d/10TEeiL9qD1n2ILU5V7yx7Y53n68xHW3jq5nR50DUHj4/edit?tab=t.0#heading=h.mjtdm3a4tyvn" target="_blank" style="color:var(--accent-blue);text-decoration:none;white-space:nowrap;font-weight:600;font-size:12px;"><svg style="width:11px;height:11px;vertical-align:middle;margin-right:2px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>DevOps Cloud Adoption Dashboard Guide</a></p>
                     <div style="background:var(--bg);border-radius:8px;padding:12px;margin-top:8px;">
                     <table>
                         <colgroup><col style="width:100px;"><col><col style="width:160px;"></colgroup>
