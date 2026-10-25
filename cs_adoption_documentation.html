@@ -422,6 +422,11 @@
                             which provides a daily True/False flag per subscription for each JAS and Curation adoption stage.
                             Daily flags are then aggregated to the subscription-month level using the rules on the right.
                         </p>
+                        <p class="body-text" style="margin-top:7px;">
+                            In addition,
+                            <span class="source-chip" style="display:inline;vertical-align:middle;color:#e06c75;border-color:#2d4550;">analysts_pne_jfs_gold.curation_adoption_metrics</span>
+                            provides the Curation Adoption and Stickiness criteria, to show why a subscription reached its stage.
+                        </p>
                     </div>
                     <div class="cs">
                         <div class="cs-title">Monthly Evaluation Rules</div>
@@ -473,14 +478,14 @@
                             <tr>
                                 <td><span class="stage s-adoption">Adoption</span></td>
                                 <td>Feature usage for 2+2+2 weeks within 3 consecutive periods (at least once, in any period)</td>
-                                <td>Customer is meaningfully using Curation — at least one of: Curation covers ≥50% of supported repository traffic (last 14 days); OR a block policy exists with &gt;1 block in past 2 weeks; OR a dry-run policy created in last 3 months with blocked coverage</td>
+                                <td>Customer is meaningfully using Curation - Activated AND at least one of: Curation covers ≥50% of supported repository traffic (last 14 days); OR a block policy has ≥1 blocked package (last 14 days)</td>
                                 <td style="white-space:nowrap;">Adopted ÷ Eligible</td>
                                 <td style="text-align:center;">2</td>
                             </tr>
                             <tr>
                                 <td><span class="stage s-stickiness">Stickiness</span></td>
                                 <td>Adopted AND used ≥2 features in the past 6 weeks</td>
-                                <td>Adopted PLUS sustained real policy enforcement: must have a block policy, AND meet ≥1 block threshold per category (last 14 days): Malicious &gt;0 (last 6 months); Legal &gt;1; Security ≥5; Operational ≥10</td>
+                                <td>Adopted PLUS sustained real policy enforcement: a block policy that meets at least one block threshold (last 14 days): Legal ≥1; Security ≥5; Operational ≥10; or Malicious &gt;0 (last 6 months)</td>
                                 <td style="white-space:nowrap;">Sticky ÷ Eligible</td>
                                 <td style="text-align:center;">2</td>
                             </tr>
@@ -632,7 +637,7 @@
 </main>
 
 <footer>
-    Last updated June 2026
+    Last updated October 2026
 </footer>
 
 <script>
